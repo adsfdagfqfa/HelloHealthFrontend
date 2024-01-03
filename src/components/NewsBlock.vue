@@ -20,16 +20,16 @@
               style="font-weight: bold;">{{ truncatedTitle }}</h1>
           <span class="flash-date">{{ flash_date }}</span>
         </el-header>
-        <el-main class="flash-preview">
+<!--        <el-main class="flash-preview">-->
           <!-- 新闻预览内容 -->
-          <p>{{ truncatedContent }}</p>
-        </el-main>
-        <el-footer class="flash-tags">
-          <!-- 新闻标签 -->
-          <el-tag size="small"
-                  v-for="tag in flash_tags_list"
-                  :key="tag">{{ tag }}</el-tag>
-        </el-footer>
+<!--          <p>{{ truncatedContent }}</p>-->
+<!--        </el-main>-->
+<!--        <el-footer class="flash-tags">-->
+<!--          &lt;!&ndash; 新闻标签 &ndash;&gt;-->
+<!--          <el-tag size="small"-->
+<!--                  v-for="tag in flash_tags_list"-->
+<!--                  :key="tag">{{ tag }}</el-tag>-->
+<!--        </el-footer>-->
       </el-container>
     </el-container>
   </el-card>
@@ -51,15 +51,9 @@ export default {
     flash_content: {
       type: String
     },
-    flash_preview: {
-      type: String
-    },
     flash_image: {
       type: String
     },
-    flash_tags_list: {
-      type: Array
-    }
   },
   computed: {
     truncatedTitle: function() {

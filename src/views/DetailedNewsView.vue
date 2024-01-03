@@ -13,23 +13,23 @@
               <el-aside width="100%">
                 <div style="align-items: center">
                   <p class="title" style="margin-bottom:20px;">
-                    {{this.news_detail.title}}
+                    {{this.news_detail.flashTitle}}
                   </p>
                   <div style="margin-bottom:1%; text-align: center">
-                    {{this.news_detail.time}}
+                    {{this.news_detail.flashTime}}
                   </div>
-                  <div class="tagWrapper">
-                      <el-tag v-for="tag in news_detail.tags" :key="tag" class="ml-2" type="warning" size="large">
-                          {{tag}}
-                      </el-tag>
-                  </div>
+<!--                  <div class="tagWrapper">-->
+<!--                      <el-tag v-for="tag in news_detail.tags" :key="tag" class="ml-2" type="warning" size="large">-->
+<!--                          {{tag}}-->
+<!--                      </el-tag>-->
+<!--                  </div>-->
                 </div>
               </el-aside>
             </el-container>
           </div>
           <el-divider />
           <div class="content">
-            <TipTapEditorReadonly :content-json-string="this.news_detail.content"></TipTapEditorReadonly>
+            <TipTapEditorReadonly :content-json-string="this.news_detail.flashContent"></TipTapEditorReadonly>
           </div>
         </div>
       </el-main>
@@ -68,7 +68,7 @@ export default {
     getParams() {
       this.flash_id = this.$route.params.flash_id;
 
-      const apiUrl = "/api/Flash/getNewsById/"+this.flash_id;
+      const apiUrl = "/FlashService/flash/"+this.flash_id;
       axios.get(apiUrl)
           .then(res => {
             this.news_detail = res.data.data;

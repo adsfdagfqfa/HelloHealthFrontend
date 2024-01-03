@@ -14,15 +14,15 @@
         <!--根据后端获取的标签输出标签-->
         <el-row class="buttonContainer" :gutter="10">
           <!-- 第一层循环，遍历所有的 group -->
-          <div v-for="group in tagList" :key="group.group_id">
+          <div v-for="group in tagList" :key="group.group.groupId">
             <span class="parent-tag text-shadow-drop-left">
-              · {{ group.group_name }}</span> <!-- 显示 group 的名字 -->
+              · {{ group.group.groupName }}</span> <!-- 显示 group 的名字 -->
             <!-- 第二层循环，遍历当前 group 下的所有 tag -->
             <el-row :gutter="5">
-              <el-col :span="12" v-for="tag in group.tags" :key="tag.tag_id">
-                <button class="buttonStyle tracking-in-expand" :class="['buttonStyle', tag.tag_id === selectedTagId ? 'active' : '']"
-                  @click="clickTag(tag.tag_id)">
-                  {{ tag.tag_name }}
+              <el-col :span="12" v-for="tag in group.tags" :key="tag.tagId">
+                <button class="buttonStyle tracking-in-expand" :class="['buttonStyle', tag.tagId === selectedTagId ? 'active' : '']"
+                  @click="clickTag(tag.tagId)">
+                  {{ tag.tagName }}
                 </button>
               </el-col>
             </el-row>
@@ -57,9 +57,9 @@ export default {
   },
   mounted() { // mounted 时获取全部标签列表
 
-    axios.get("/api/Flash/tagList")
+    axios.get("/FlashService/flash/tagList")
       .then(response => {
-        this.tagList = response.data.data.tagList;
+        this.tagList = response.data.data;
       })
       .catch(error => {
         console.error(error)

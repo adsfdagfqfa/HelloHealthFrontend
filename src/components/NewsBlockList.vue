@@ -8,10 +8,12 @@
         <el-row class="result_title">
           <el-col >
             <el-input
-                v-model="input"
                 class="search-box"
                 placeholder="根据关键词查找新闻"
                 :suffix-icon="Search"
+                @change="filteredNewsList"
+                v-model.change="this.input"
+                clearable
             />
 
 
@@ -20,13 +22,11 @@
         <!-- 三个 NewsBlock 组件 -->
         <NewsBlock
             class="flash tilt-in-left-1"
-            v-for="flash in currentNewsList"  :key="flash.id"
-            :flash_title="flash.title"
-            :flash_date="flash.time"
-            :flash_preview="flash.preview"
-            :flash_image="flash.image"
-            :flash_tags_list="flash.tags"
-            :flash_id="flash.id"
+            v-for="flash in currentNewsList"  :key="flash.flashId"
+            :flash_title="flash.flashTitle"
+            :flash_date="flash.flashTime"
+            :flash_image="flash.flashImage"
+            :flash_id="flash.flashId"
         />
       </el-main>
       <el-footer>
@@ -79,11 +79,11 @@ export default {
       }
     },
     filteredNewsList() {
-      if (!this.input) {
+      if (this.input==="") {
         return this.newsList;
+      }else{
+        return this.newsList.filter(news => news.flashTitle.includes(this.input));
       }
-      const keyword = this.input.toLowerCase();
-      return this.newsList.filter(news => news.title.toLowerCase().includes(keyword));
     },
     filteredNewsListTotal() {
       return this.filteredNewsList.length;
@@ -95,16 +95,24 @@ export default {
       console.log(`page changed`);
     },
     getNewsList() {
-      const apiUrl = this.selectedTagId
-          ? `/api/Flash/newsByTag/${this.selectedTagId}`
-          : "/api/Flash/newsByTag/-1";//如果没有选择标签，就传给后端-1，后端返回全部资讯
-      axios.get(apiUrl)
-          .then(res => {
-            this.newsList = res.data.data.newsList;    // 获取全部新闻列表
-            this.newsList.forEach(item => {
-              item.preview = this.getContentText(item.content)
-            })
-          })
+        if(this.selectedTagId!=null) {
+            axios.get("/FlashService/flash/newsByTag/" + this.selectedTagId)
+                .then(res => {
+                    this.newsList = res.data.data;    //该标签下的全部新闻列表
+                    this.newsList.forEach(item => {
+                        item.preview = this.getContentText(item.content)
+                    })
+                })
+        }else{
+            axios.get("/FlashService/flash")//如果没有选择标签，后端返回全部资讯
+                .then(res => {
+                    this.newsList = res.data.data;    // 获取全部新闻列表
+                    this.newsList.forEach(item => {
+                        item.preview = this.getContentText(item.content)
+                    })
+                })
+        }
+
     },
     getContentText(contentJson) {
       contentJson = JSON.parse(contentJson);

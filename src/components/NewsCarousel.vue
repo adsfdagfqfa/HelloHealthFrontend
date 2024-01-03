@@ -1,11 +1,11 @@
 <template>
   <el-carousel :interval="4000" type="card" height="300px" indicator-position="outside" arrow="never">
-    <el-carousel-item v-for="news in newsList" :key="news.newsId" @click="goFullContent(news.newsId)">
+    <el-carousel-item v-for="news in newsList" :key="news.flashId" @click="goFullContent(news.flashId)">
       <el-image class="car-image"
-          :src="news.newsImage"
+          :src="news.flashImage"
           style="width: 100%; height: 100%"
       />
-      <div class="title" v-text="news.newsTitle"></div>
+      <div class="title" v-text="news.flashTitle"></div>
     </el-carousel-item>
   </el-carousel>
 </template>
@@ -22,13 +22,14 @@ export default {
   },
   methods: {
     getNewsList() {
-      const apiUrl = "/spring/flash/hotNews";
+      const apiUrl = "/FlashService/flash/hotNews";
       axios.get(apiUrl)
           .then(res => {
-            this.newsList = res.data.data;    // 获取全部新闻列表
-            this.newsNum = this.newsList.length;         // 总新闻数
+              console.log(res)
+            this.newsList = res.data.data;    // 获取到了热门新闻列表
+            this.newsNum = this.newsList.length;         // 新闻数
           })
-        console.log("获取到了全部新闻列表")
+        console.log("获取到了热门新闻列表")
     },
     goFullContent(flash_id) {
       this.$router.push("/news/"+flash_id);

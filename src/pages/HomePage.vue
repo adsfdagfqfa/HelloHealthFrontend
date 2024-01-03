@@ -72,12 +72,12 @@ const isLogin = ref(false);
 const loadComplete = ref(true);
 const gotUserInfo = ref(false)
 
-axios.get("/api/UserInfo").then(response => {
-    let responseObj = response.json
-    isLogin.value = responseObj.login;
+//axios.get("/api/UserInfo").then(response => {
+    //let responseObj = response.json
+    //isLogin.value = responseObj.login;
 
     gotUserInfo.value = true
-    if (!responseObj.login) return;
+    //if (!responseObj.login) return;
     menus.v = [
         { "title": "HH 首页", "icon": "fi-rr-home", "path": "/" },
         { "title": "HH 找药", "icon": "fi-rr-capsules", "path": "/medicine" },
@@ -98,14 +98,14 @@ axios.get("/api/UserInfo").then(response => {
     setTimeout(() => {
         loadComplete.value = true
     }, 0)
-    globalData.login = true;
-    globalData.locked = responseObj.locked
-    userInfo.data = responseObj
+    //globalData.login = false;
+    //globalData.locked = responseObj.locked
+    //userInfo.data = responseObj
     globalData.userInfo = userInfo.data
-}).catch(error => {
-    if (error.network) return
-    error.defaultHandler();
-})
+//}).catch(error => {
+/*    if (error.network) return
+    error.defaultHandler();*/
+//})
 
 
 const getSidebarPath = () => {
@@ -151,11 +151,11 @@ const menu = ref();
 let contentDom = undefined;
 onMounted(() => {
     (() => {
-        axios.get("/spring/test").then(response => {
-            console.log(response.data)
-        }).catch(error => {
-            console.log(error)
-        })
+        // axios.get("/spring/test").then(response => {
+        //     console.log(response.data)
+        // }).catch(error => {
+        //     console.log(error)
+        // })
 
         let menuItemNow = getSidebarPath();
         for (let item of menus.v) {

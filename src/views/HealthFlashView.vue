@@ -67,7 +67,7 @@ export default {
 
 .left {
   width: auto;
-  padding-left: 50px;
+  /*padding-left: 50px;*/
   padding-top: 20px;
 }
 

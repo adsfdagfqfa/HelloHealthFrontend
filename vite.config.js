@@ -16,10 +16,15 @@ export default defineConfig({
     server: {
         proxy: {
           '/spring': {
-            // target: 'http://localhost:8085',
             target: 'http://49.235.103.189:8070',
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/spring/, '')
+          },
+          '/FlashService' : {
+            target: 'http://49.235.103.189:8085',
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/FlashService/, '')
+
           }
         }
     }
