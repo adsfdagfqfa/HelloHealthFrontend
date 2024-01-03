@@ -36,6 +36,8 @@ import {reactive, ref} from 'vue'
 import axios from "axios";
 import {changeTheme} from "@/assets/changeTheme";
 import router from "@/router";
+import {inject} from "vue";
+let UserInfo = inject("UserInfo")
 
 changeTheme("#93b27b")
 
@@ -63,6 +65,7 @@ const onSubmit = () => {
     axios.post("/api/Login",loginCredential).then(response => {
         isError.value = false;
         errorMsg.value = ''
+        UserInfo.setUserId(response.data.data.user_id)
         router.push("/")
     }).catch(error => {
         if(error.network) return;

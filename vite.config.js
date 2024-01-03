@@ -13,4 +13,14 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+    server: {
+        proxy: {
+          '/check': {
+            target: 'http://localhost:8080',
+            // target: 'http://49.235.103.189:8070',
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/check/, '')
+          }
+        }
+    }
 })

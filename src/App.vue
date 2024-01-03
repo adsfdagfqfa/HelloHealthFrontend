@@ -6,6 +6,18 @@ import loadingScreen from "@/global/loading";
 import {ElMessage} from "element-plus";
 import router from "@/router";
 
+import {provide} from 'vue'
+let UserInfo = {
+    userId:null,
+    setUserId(userId){
+        this.userId = userId
+    },
+    getUserId(){
+        return this.userId
+    }
+}
+provide("UserInfo", UserInfo)
+
 if(import.meta.env.VITE_AXIOS_BASE_URL) axios.defaults.baseURL = import.meta.env.VITE_AXIOS_BASE_URL
 //发送请求时自动显示加载界面
 axios.interceptors.request.use((config) => {
