@@ -11,7 +11,7 @@
         </div>
 
         <el-form-item label="手机号" v-bind:class="{ error: isError }">
-            <el-input v-model="loginCredential.user_phone" @click="clearErrorBorder" type="number" step="1" min="0"/>
+            <el-input v-model="loginCredential.phoneNumber" @click="clearErrorBorder" type="number" step="1" min="0"/>
         </el-form-item>
         <el-form-item label="密码" v-bind:class="{ error: isError }">
             <el-input v-model="loginCredential.password" type="password" @click="clearErrorBorder" show-password/>
@@ -40,7 +40,7 @@ import router from "@/router";
 changeTheme("#93b27b")
 
 const loginCredential = reactive({
-    user_phone: '',
+    phoneNumber: '',
     password: '',
 })
 
@@ -51,20 +51,22 @@ const onSubmit = () => {
     isError.value = false;
 
     let regPhone = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/
-    if(loginCredential.user_phone===''){
+    if(loginCredential.phoneNumber===''){
         errorMsg.value = "请输入手机号！"
         isError.value = true
         return
-    }else if(!regPhone.test(loginCredential.user_phone)){
+    }else if(!regPhone.test(loginCredential.phoneNumber)){
         errorMsg.value = "请输入正确的手机号！"
         isError.value = true
         return
     }
-    axios.post("/api/Login",loginCredential).then(response => {
+    axios.post("/loginService/user/login",loginCredential).then(response => {
+        localStorage.setItem("userId",response.data.data.userId)
         isError.value = false;
         errorMsg.value = ''
         router.push("/")
     }).catch(error => {
+        console.log(error.response)
         if(error.network) return;
         switch(error.errorCode){
             case 103:
