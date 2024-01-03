@@ -2,7 +2,7 @@
 import {reactive, ref} from "vue";
 import router from "@/router";
 import axios from "axios";
-
+import global from '@/global/global'
 const showingMessages = reactive({data:[]})
 
 const messages = reactive({data:[]})
@@ -34,7 +34,7 @@ const copyShowingMsg = () => {
 const getNotification = () => {
     isLoading.value = true
     isExpended.value = false
-    axios.get("/api/Notification",{doNotShowLoadingScreen: true}).then((res) => {
+    axios.get("/toDoListService/api/notification/getNotices"+"?userId="+global.userInfo.userId,{doNotShowLoadingScreen: true}).then((res) => {
         isLoading.value = false;
         showMsg.value = false;
         messages.data = res.json.notifications;
@@ -56,7 +56,7 @@ const goUrl = (url) => {
 const clearMessages = () => {
     messages.data = [];
     showingMessages.data = [];
-    axios.get("/api/Notification/Clear",{doNotShowLoadingScreen: true})
+    axios.post("/toDoListService/api/notification/clearNotices",{userId:global.userInfo.userId},{doNotShowLoadingScreen: true})
 }
 </script>
 

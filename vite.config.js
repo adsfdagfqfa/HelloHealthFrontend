@@ -37,6 +37,12 @@ export default defineConfig({
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/userInfoService/, '')
           },
+          '/toDoListService':{
+            // target: 'http://localhost:8085',
+            target: 'http://8.130.78.60:9099',
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/toDoListService/, '')
+          },
         }
     }
 })

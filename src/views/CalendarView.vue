@@ -12,7 +12,7 @@ import {ElMessage} from "element-plus";
 import {computed} from "vue";
 import axios from "axios";
 import moment from "moment/moment";
-
+import global from '@/global/global';
 export default {
     name: "CalendarView",
     components: {
@@ -212,7 +212,7 @@ export default {
         // 删除事件
         deleteEvent(event) {
             // 在 events 数组中查找并删除具有给定 eventID 的事件
-            axios.post("/api/List/removeEvent",{id:parseInt(event.id)})
+            axios.post("/toDoListService/api/toDoList/removeEvents",{id:parseInt(event.id),userId:global.userInfo.userId})
                 .then(res => {
                     const index = this.allEvents.findIndex(e => e.id === event.id);
                     if (index !== -1)
@@ -359,7 +359,8 @@ export default {
                 return false
             }
             try{
-                let res = await axios.post('/api/List/editEvent',newCompleteEvent)
+                newCompleteEvent.userId=global.userInfo.userId;
+                let res = await axios.post('/toDoListService/api/toDoList/editEvents',newCompleteEvent)
                 if(!oldEvent){
                     oldEvent = {id: res.json.new_id}
                     this.allEvents.push(oldEvent)
@@ -458,7 +459,7 @@ export default {
             this.$router.push("/login")
             return;
         }
-        axios.get("/api/List/getEvents")
+        axios.get("/toDoListService/api/toDoList/getEvents"+"?userId="+global.userInfo.userId);
             .then(res => {
                 this.allEvents = []
                 for(let event of res.json.events){
