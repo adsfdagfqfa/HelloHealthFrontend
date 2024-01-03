@@ -459,7 +459,7 @@ export default {
             this.$router.push("/login")
             return;
         }
-        axios.get("/toDoListService/api/toDoList/getEvents"+"?userId="+global.userInfo.userId);
+        axios.get("/toDoListService/api/toDoList/getEvents"+"?userId="+global.userInfo.userId)
             .then(res => {
                 this.allEvents = []
                 for(let event of res.json.events){
