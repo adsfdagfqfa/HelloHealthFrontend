@@ -142,7 +142,7 @@ export default {
 
 <style scoped>
 .news-container {
-  width: auto;
+  width: 605px;
   display: flex;
   align-items: center;
 }
