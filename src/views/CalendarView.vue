@@ -12,7 +12,7 @@ import {ElMessage} from "element-plus";
 import {computed} from "vue";
 import axios from "axios";
 import moment from "moment/moment";
-
+//import global from '@/global/global';
 export default {
     name: "CalendarView",
     components: {
@@ -212,13 +212,17 @@ export default {
         // 删除事件
         deleteEvent(event) {
             // 在 events 数组中查找并删除具有给定 eventID 的事件
-            axios.post("/api/List/removeEvent",{id:parseInt(event.id)})
+          const formData = new FormData();
+          formData.append('id', parseInt(event.id));
+          formData.append('userId', localStorage.getItem("userId"));
+            axios.post("/toDoListService/api/toDoList/removeEvents",formData)
                 .then(res => {
                     const index = this.allEvents.findIndex(e => e.id === event.id);
                     if (index !== -1)
                         this.allEvents.splice(index, 1);
                 })
                 .catch(error => {
+                    console.log(error)
                     if(error.network) return;
                     switch (error.errorCode){
                         case 404:
@@ -359,7 +363,18 @@ export default {
                 return false
             }
             try{
-                let res = await axios.post('/api/List/editEvent',newCompleteEvent)
+
+                const formData = new FormData();
+                formData.append('id', newCompleteEvent.id);
+                formData.append('userId',localStorage.getItem("userId"));
+                formData.append('start',newCompleteEvent.start);
+                formData.append('end',newCompleteEvent.end);
+                formData.append('title',newCompleteEvent.title);
+                formData.append('priority',newCompleteEvent.priority);
+                formData.append('notify',newCompleteEvent.notify);
+                formData.append('interval',newCompleteEvent.interval);
+
+                let res = await axios.post('/toDoListService/api/toDoList/editEvents',formData)
                 if(!oldEvent){
                     oldEvent = {id: res.json.new_id}
                     this.allEvents.push(oldEvent)
@@ -370,6 +385,7 @@ export default {
                 oldEvent.finished = newCompleteEvent.finished
                 oldEvent.priority = newCompleteEvent.priority
                 oldEvent.interval = newCompleteEvent.interval
+
                 oldEvent.notify = newCompleteEvent.notify
                 return true
             }catch(error){
@@ -452,13 +468,13 @@ export default {
         }
     },
     created() {
-        if(!globalData.login)
+        if(localStorage.getItem("userId")===null)
         {
             ElMessage.error('请先登录!')
             this.$router.push("/login")
             return;
         }
-        axios.get("/api/List/getEvents")
+        axios.get("/toDoListService/api/toDoList/getEvents"+"?userId="+localStorage.getItem("userId"))
             .then(res => {
                 this.allEvents = []
                 for(let event of res.json.events){

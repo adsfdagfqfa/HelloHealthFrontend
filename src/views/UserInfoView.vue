@@ -458,9 +458,9 @@ export default {
             // 举报信息的数据
             reportList: [],
             reportCols: [
-                { prop: 'report_time', label: "举报时间" },
-                { prop: 'respond_time', label: "处理时间" },
-                { prop: "report_status", label: "举报状态" },
+                { prop: 'reportTime', label: "举报时间" },
+                { prop: 'reportRespondTime', label: "处理时间" },
+                { prop: "reportStatus", label: "举报状态" },
             ],
             statusMap: {
                 0: "不通过",
@@ -475,8 +475,8 @@ export default {
         $route: {
             handler: function (route) {
                 console.log("watch")
-                let userIdNum = parseInt(this.$route.params.userId ? this.$route.params.userId : 0);
-
+                //let userIdNum = parseInt(this.$route.params.userId ? this.$route.params.userId : 0);
+                let userIdNum = localStorage.getItem("userId")
                 if (!userIdNum && !globalData.login) {
 
                     this.$router.push("/login");
@@ -522,13 +522,15 @@ export default {
 
         refresh() {
             this.fetchReport()
-            let userIdNum = parseInt(this.$route.params.userId ? this.$route.params.userId : 0);
+            //let userIdNum = parseInt(this.$route.params.userId ? this.$route.params.userId : 0);
+            let userIdNum = localStorage.getItem("userId")
             console.log(userIdNum);
             if (isNaN(userIdNum)) {
                 this.$router.replace("/error");
                 return;
             }
-            axios.post('/api/UserInfo/Details', { user_id: userIdNum })
+            const sessionUserId = localStorage.getItem("userId")
+            axios.get('/userInfoService/user/getDetails?frontUserId='+userIdNum+"&sessionUserId="+sessionUserId)
                 .then(response => {
                     const responseData = response.data.data.userInfo;
                     this.userInfo = responseData
@@ -588,7 +590,7 @@ export default {
             this.$router.push("/user/" + userId)
         },
         onFollowBtnClick(userId) {
-            if (!globalData.login) {
+            if (localStorage.getItem("userId")===null) {
                 ElMessage.error('请先登录!')
                 this.$router.push("/login")
                 return;
@@ -602,8 +604,9 @@ export default {
             }
         },
         unfollow(userId) {
+          const unfollowUserId = localStorage.getItem("userId")
             if (userId) {
-                axios.post("/api/UserInfo/unfollowUser", { followUserID: userId })
+                axios.post("/userInfoService/user/unfollowUser", { userId: unfollowUserId,followUserID: userId })
                     .then(response => {
                         //如果后端返回的状态码是200，那么将isFollowed设置为false
                         this.followMap.set(userId, false)
@@ -614,7 +617,7 @@ export default {
                         error.defaultHandler();
                     });
             } else {
-                axios.post("/api/UserInfo/unfollowUser", { followUserID: this.userInfo.userID })
+                axios.post("/userInfoService/user/unfollowUser", { userId: unfollowUserId, followUserID: this.userInfo.userID })
                     .then(response => {
                         //如果后端返回的状态码是200，那么将isFollowed设置为false
                         this.isFollowed = false;
@@ -628,9 +631,9 @@ export default {
         },
         //添加一个新的方法，用于处理关注按钮的点击事件
         followUser(userId) {
-
+            const followUserId = localStorage.getItem("userId")
             if (userId) {
-                axios.post("/api/UserInfo/followUser", { followUserID: userId })
+                axios.post("/userInfoService/user/followUser", { userId: followUserId,followUserID: userId })
                     .then(response => {
                         //如果后端返回的状态码是200，那么将isFollowed设置为true
                         this.followMap.set(userId, true);
@@ -641,7 +644,7 @@ export default {
                         error.defaultHandler();
                     });
             } else {
-                axios.post("/api/UserInfo/followUser", { followUserID: this.userInfo.userID })
+                axios.post("/userInfoService/user/followUser", { userId: followUserId, followUserID: this.userInfo.userID })
                     .then(response => {
                         //如果后端返回的状态码是200，那么将isFollowed设置为true
                         this.isFollowed = true;
@@ -674,7 +677,7 @@ export default {
         },
         save() {
             // 将修改后的用户信息保存到数据库
-            axios.post('/api/UserInfo/modifyUserInfo', {
+            axios.post('/userInfoService/user/modifyUserInfo', {
                 gender: this.userInfo.gender,
                 email: this.userInfo.email,
                 birthday: this.userInfo.birthday,
@@ -687,13 +690,13 @@ export default {
                     //this.userInfo.gender = this.userInfo.gender;
                     // 将下拉框选中的值保存到userInfo.birthday中
                     //this.userInfo.birthday=this.userInfo.birthday;
-                    if (response.data.data.status == true) {
+                    //if (response.data.data.status == true) {
                         ElMessage.success("上传成功！");//这个管理员就不审核了
                         // 保存成功后将isEdit变量设置为false，禁用编辑模式
                         this.isEdit = false;
-                    } else {
+                    /*} else {
                         ElMessage.error("上传失败！");
-                    }
+                    }*/
                 })
                 .catch((error) => {
                     this.isEdit = false;
@@ -724,16 +727,18 @@ export default {
             // 添加医师资格证照片
             if (this.doctorPic) {
                 console.log("que")
-                formData.set('doctorPic', this.doctorPic);
+                formData.append('files', this.doctorPic);
             }
             // 添加执业证照片
             if (this.businessPic) {
                 console.log("pra")
-                formData.set('businessPic', this.businessPic);
+                formData.append('files', this.businessPic);
             }
             console.log(formData);
             // 发起一个 POST 请求，将 formData 发送给后端服务器
-            axios.post('/api/UserInfo/uploadDoctorApproval', formData)
+            const uploadImageUserId = localStorage.getItem("userId");
+            formData.append("userId",uploadImageUserId);
+            axios.post('/userInfoService/user/uploadDoctorApproval', formData)
                 .then(response => {
                     console.log(response.data);
                     if (response.data.data.status == true) {
@@ -780,9 +785,9 @@ export default {
         },
         /* 求获取用户发布的帖子 */
         fetchUserPosts(userID) {
-            axios.post("/api/UserInfo/fetchUserPosts", {
+            axios.post("/userInfoService/user/fetchUserPosts", {
 
-                user_id: userID
+                user_id: localStorage.getItem("userId")
 
             }).then(res => {
                 this.userPosts = res.data.data.post_list;
@@ -790,7 +795,8 @@ export default {
         },
         fetchReport() {
             // 获取举报信息
-            axios.get(`/api/UserInfo/Report?userid=${globalData.userInfo.userId}`)
+            const reportUserId = localStorage.getItem("userId")
+            axios.get(`/userInfoService/user/Report?userId=`+reportUserId)
                 .then((res) => {
                     this.reportList = res.data.data.reportList;
                     console.log(this.reportList)
