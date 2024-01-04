@@ -42,6 +42,7 @@ changeTheme("#93b27b")
 const loginCredential = reactive({
     phoneNumber: '',
     password: '',
+
 })
 
 const errorMsg = ref('')

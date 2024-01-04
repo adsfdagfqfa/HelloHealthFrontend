@@ -27,7 +27,8 @@ const searchStart = (msg) => {
 }
 
 const exitButtonClicked = async () => {
-    await axios.get("/api/Login/Logout")
+    //await axios.get("/api/Login/Logout")
+    localStorage.clear();
     window.location.href = "/";
 }
 

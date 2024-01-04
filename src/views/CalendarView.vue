@@ -366,7 +366,7 @@ export default {
 
                 const formData = new FormData();
                 formData.append('id', newCompleteEvent.id);
-                formData.append('userId',localStorage.getItem("userId"););
+                formData.append('userId',localStorage.getItem("userId"));
                 formData.append('start',newCompleteEvent.start);
                 formData.append('end',newCompleteEvent.end);
                 formData.append('title',newCompleteEvent.title);
@@ -385,6 +385,7 @@ export default {
                 oldEvent.finished = newCompleteEvent.finished
                 oldEvent.priority = newCompleteEvent.priority
                 oldEvent.interval = newCompleteEvent.interval
+
                 oldEvent.notify = newCompleteEvent.notify
                 return true
             }catch(error){
