@@ -20,7 +20,7 @@
         <div style="height: 85px">
             <!--显示帖子名称-->
             <div class="card_title" @click="goDetail">
-                <span>{{ PostTitleSummary(post_info.post_title) }}</span>
+                <span>{{ postTitleSummary }}</span>
             </div>
         </div>
         <div style="height: 40px">
@@ -89,7 +89,6 @@
 .card-wrapper .el-card__body {
     padding: 0 !important;
     margin-bottom: 10px;
-//height: 200px;
 }
 
 .card-wrapper {
@@ -110,6 +109,16 @@ import {ElMessage} from "element-plus";
 import router from "@/router";
 
 export default {
+    computed: {
+        postTitleSummary() {
+            const title = this.post_info.post_title;
+            if (title && title.length < 10) {
+                return title;
+            } else {
+                return title ? title.slice(0, 12) + "..." : '';
+            }
+        }
+    },
     components:
         {
             LikeButton,
@@ -135,14 +144,14 @@ export default {
                     path: "/forum/" + this.post_info.post_id,
                 });
             },
-            //防止标题过长
-            PostTitleSummary(title) {
-                if (title.length < 10) {
-                    return title;
-                } else {
-                    return title.slice(0, 12) + "...";
-                }
-            }
+            // //防止标题过长
+            // PostTitleSummary(title) {
+            //     if (title.length < 10) {
+            //         return title;
+            //     } else {
+            //         return title.slice(0, 12) + "...";
+            //     }
+            // }
         },
     created() {
 

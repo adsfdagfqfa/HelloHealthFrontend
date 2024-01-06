@@ -43,6 +43,12 @@ export default defineConfig({
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/toDoListService/, '')
           },
+          '/forumService':{
+            //target: 'http://localhost:9099',
+            target: 'http://8.130.50.166:8089',
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/forumService/, '')
+          },
         }
     }
 })
