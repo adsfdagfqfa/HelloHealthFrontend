@@ -267,9 +267,9 @@ export default{
             // 使用GET方法并添加查询参数
             axios.get(`/forumService/forum/posts?${queryParams}`)
                 .then((res)=> {
-                  this.post_list= res.data.data.post_list; // 注意：这里假设响应的数据在data属性中
+                  this.post_list= res.data.data.post_list;
                   console.log(this.post_list)
-                  this.tags = res.data.data.tags; // 同上
+                  this.tags = res.data.data.tags;
                   this.changePagePost();
                 })
                 .catch((error) => {

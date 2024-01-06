@@ -3,7 +3,7 @@
     <el-card class="card-wrapper"
              shadow="never">
         <div style="height: 250px">
-            <img alt="" :src="post_info.post_pic" class="card_image" @click="goDetail"/>
+            <img alt="" :src="post_info.postPic" class="card_image" @click="goDetail"/>
         </div>
         <!--
        <img v-else
@@ -14,7 +14,7 @@
         <!--显示标签 -->
         <div style="padding: 14px">
             <div class="post-tag-bar">
-                <el-tag type="success" size="small" v-for="tag in post_info.post_tag">{{ tag }}</el-tag>
+                <el-tag type="success" size="small" v-for="tag in post_info.postTag">{{ tag }}</el-tag>
             </div>
         </div>
         <div style="height: 85px">
@@ -28,9 +28,9 @@
             <section class="card_author">
                 <el-row align="middle" style="margin-left:5%;">
                     <el-col :span="10" style="display: flex; align-items: center">
-                        <el-avatar :size="25" :src="post_info.author_portrait" style="margin-right: 5px"></el-avatar>
+                        <el-avatar :size="25" :src="post_info.authorPortrait" style="margin-right: 5px"></el-avatar>
                         <span class="card_author">
-                        {{ post_info.author_name }}
+                        {{ post_info.authorName }}
                     </span>
                     </el-col>
                     <!--ref是为了在创建时能执行语句，不是用来绑定引用-->
@@ -111,7 +111,7 @@ import router from "@/router";
 export default {
     computed: {
         postTitleSummary() {
-            const title = this.post_info.post_title;
+            const title = this.post_info.postTitle;
             if (title && title.length < 10) {
                 return title;
             } else {
@@ -141,7 +141,7 @@ export default {
         {
             goDetail() {
                 router.push({
-                    path: "/forum/" + this.post_info.post_id,
+                    path: "/forumService/forum/posts/" + this.post_info.postId,
                 });
             },
             // //防止标题过长
