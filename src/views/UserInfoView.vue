@@ -568,16 +568,16 @@ export default {
                     let result = (userIdNum == 0) || (userIdNum == globalData.userInfo.user_id);
 
                     this.isCurrentUser = result;
-                    if (result) {
+                    /*if (result) {
                         axios.get("/api/HB/record")
                             .then(response => {
                                 this.CoinRecordList = response.data.data.coinRecordList;
                                 this.CoinNum = response.data.data.coinNum;
                             })
 
-                        /* 举报信息 */
+                        /!* 举报信息 *!/
                         this.fetchReport()
-                    }
+                    }*/
                 })
                 .catch(error => {
                     if (error.network) return;
