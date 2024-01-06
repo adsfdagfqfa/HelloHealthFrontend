@@ -220,10 +220,8 @@ export default{
     data:()=> (
         {
             type_sort: {
-                type: "Time",
-                number: -1,
-                 
-                // TODO: 加个页号选择
+                type: "time",
+
 
             } ,//之前选择的类型
             postsPerPage:9,
