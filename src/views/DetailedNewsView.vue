@@ -68,7 +68,7 @@ export default {
     getParams() {
       this.flash_id = this.$route.params.flash_id;
 
-      const apiUrl = "/spring/api/v1/flash/"+this.flash_id;
+      const apiUrl = "/spring/api/v1/flashService/flash/"+this.flash_id;
       axios.get(apiUrl)
           .then(res => {
             this.news_detail = res.data.data;

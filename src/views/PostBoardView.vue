@@ -20,8 +20,8 @@
                 class="demo-tabs"
 
                 @tab-click="sortSwitcher">
-                <el-tab-pane  label="论坛最新" name="Time"> </el-tab-pane>
-                <el-tab-pane  label="论坛最热" name="Heat"> </el-tab-pane>
+                <el-tab-pane  label="论坛最新" name="time"> </el-tab-pane>
+                <el-tab-pane  label="论坛最热" name="popularity"> </el-tab-pane>
             </el-tabs>
 
             <el-row v-if="post_list">
@@ -220,10 +220,8 @@ export default{
     data:()=> (
         {
             type_sort: {
-                type: "Time",
-                number: -1,
-                 
-                // TODO: 加个页号选择
+                type: "time",
+
 
             } ,//之前选择的类型
             postsPerPage:9,
@@ -263,19 +261,22 @@ export default{
                 this.currentPage=1;
                 this.sortBy();
             },
-            sortBy(){
-                axios.post("/api/Forum/SortBy", this.type_sort)
-                    .then((res)=> {
-                        this.post_list= res.json.post_list;
-                        this.tags = res.json.tags;
-                        this.changePagePost();
-                    })
-                    .catch((error) => {
-                        if(error.network) return;
-                        error.defaultHandler("加载帖子出错");
-                    });
-
-            },
+          sortBy(){
+            // 构建查询参数字符串
+            const queryParams = new URLSearchParams({ sort: this.type_sort.type }).toString();
+            // 使用GET方法并添加查询参数
+            axios.get(`/forumService/forum/posts?${queryParams}`)
+                .then((res)=> {
+                  this.post_list= res.data.data.post_list;
+                  console.log(this.post_list)
+                  this.tags = res.data.data.tags;
+                  this.changePagePost();
+                })
+                .catch((error) => {
+                  if(error.network) return;
+                  error.defaultHandler("加载帖子出错");
+                });
+          },
             openPostEditor() {
                 if(!globalData.login){
                     ElMessage.error('请先登录再参与讨论。')

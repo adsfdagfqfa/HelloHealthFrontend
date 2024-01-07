@@ -23,7 +23,7 @@ const prop = defineProps({
     postId: Number
 })
 
-const isSolutionReal = ref(prop.postInfo.solution === prop.floorInfo.comment_id);
+const isSolutionReal = ref(prop.postInfo.solution === prop.floorInfo.commentId);
 
 const emits = defineEmits(['replyClicked','firstFloorReplyClicked','goToSolutionClicked','solutionSet',"userFollowStateToggled"])
 
@@ -85,10 +85,10 @@ const onReplySubmit = (content,reply_user_info,handler) =>{
             newComments.value.push({
                 content: content.value,
                 comment_id: res.json.comment_id,
-                like: {
-                    status: false,
-                    num: 0
-                },
+                // like: {
+                //     status: false,
+                //     num: 0
+                // },
                 author: globalData.userInfo,
                 comment_user_id: reply_user_info ? reply_user_info.user_id : -1,
                 comment_user_name: reply_user_info ? reply_user_info.user_name : '',
@@ -151,11 +151,11 @@ const onUnfollowClicked = () => {
 </script>
 
 <template>
-    <div class="floorWrapper" v-if="!deleted" :floor="floorInfo.floor_number">
+    <div class="floorWrapper" v-if="!deleted" :floor="floorInfo.floorNumber">
         <div class="userInfoWrapper">
             <div class="header">
                 <UserInfoCard :user-info="floorInfo.author"></UserInfoCard>
-                <div v-if="globalData.login && globalData.userInfo.user_id !== floorInfo.author.user_id">
+                <div v-if="globalData.login && globalData.userInfo.user_id !== floorInfo.author.userId">
                     <el-button v-if="floorInfo.author.followed" @click="onUnfollowClicked">
                         <i class="fi fi-rr-minus addIcon"></i><span>已关注</span>
                     </el-button>
@@ -171,13 +171,13 @@ const onUnfollowClicked = () => {
 
         </div>
         <div class="contentWrapper">
-            <div class="floorNumberIndicator">#{{floorInfo.floor_number}}</div>
-            <div v-if="floorInfo.floor_number===1" class="title">{{postInfo.title}}</div>
-            <el-tag v-if="floorInfo.floor_number===1 && postInfo.is_bounty && postInfo.solution !== -1" class="bountyTag">
+            <div class="floorNumberIndicator">#{{floorInfo.floorNumber}}</div>
+            <div v-if="floorInfo.floorNumber===1" class="title">{{postInfo.title}}</div>
+            <el-tag v-if="floorInfo.floorNumber===1 && postInfo.is_bounty && postInfo.solution !== -1" class="bountyTag">
                 <span>赏金{{postInfo.bounty_value}}杏仁币，</span>
                 <span @click="emits('goToSolutionClicked')" class="scrollToSolutionButton">点击查看最佳答案</span>
             </el-tag>
-            <el-tag v-if="floorInfo.floor_number===1 && postInfo.is_bounty && postInfo.solution === -1" class="bountyTag" type="warning">正在进行悬赏！赏金{{postInfo.bounty_value}}杏仁币。</el-tag>
+            <el-tag v-if="floorInfo.floorNumber===1 && postInfo.is_bounty && postInfo.solution === -1" class="bountyTag" type="warning">正在进行悬赏！赏金{{postInfo.bounty_value}}杏仁币。</el-tag>
             <el-tag v-if="isSolutionReal" class="bountyTag">
                 <div style="display: flex; align-items: center;">
                     <i class="fi fi-sr-badge centerIcon"></i><span>最佳答案</span>
@@ -188,7 +188,7 @@ const onUnfollowClicked = () => {
             </div>
             <div class="contentStatus">
                 <div class="time">
-                    {{floorInfo.post_time}}
+                    {{floorInfo.postTime}}
                 </div>
                 <div class="rewards">
                     <el-popover placement="top" trigger="click">
@@ -196,30 +196,30 @@ const onUnfollowClicked = () => {
                             <i class="fi fi-rr-menu-dots centerIcon replyButton"></i>
                         </template>
                         <div style="text-align: center">
-                            <ReportButton :comment_id="floorInfo.comment_id"></ReportButton>
+                            <ReportButton :comment_id="floorInfo.commentId"></ReportButton>
                             <DeleteButton
-                                v-if="(floorInfo.author.user_id===globalData.userInfo.user_id || postInfo.floors[0].author.user_id === globalData.userInfo.user_id) && !isSolutionReal"
+                                v-if="(floorInfo.author.userId===globalData.userInfo.user_id || postInfo.floors[0].author.userId === globalData.userInfo.user_id) && !isSolutionReal"
                                 :comment_id="floorInfo.comment_id" :is-first-floor="floorInfo.floor_number===1" :is-floor="true" @deleted="onMeDeleted">
                             </DeleteButton>
                         </div>
                     </el-popover>
                     <SetSolutionButton
-                        :comment_id="floorInfo.comment_id"
-                        :comment_user_name="floorInfo.author.user_name"
-                        @solution-set="isSolutionReal=true;emits('solutionSet',floorInfo.comment_id)"
-                        v-if="floorInfo.floor_number>1 && postInfo.is_bounty && postInfo.solution === -1 && postInfo.floors[0].author.user_id === globalData.userInfo.user_id">
+                        :comment_id="floorInfo.commentId"
+                        :comment_user_name="floorInfo.author.userName"
+                        @solution-set="isSolutionReal=true;emits('solutionSet',floorInfo.commentId)"
+                        v-if="floorInfo.floorNumber>1 && postInfo.is_bounty && postInfo.solution === -1 && postInfo.floors[0].author.userId === globalData.userInfo.user_id">
                     </SetSolutionButton>
-                    <LikeButton :comment_id="floorInfo.comment_id" :like-info="floorInfo.reward.like"></LikeButton>
-                    <CoinButton :comment_id="floorInfo.comment_id" :coin-info="floorInfo.reward.coin">
-                    </CoinButton>
-                    <StarButton v-if="floorInfo.floor_number===1" :post_id="postId" :star-info="postInfo.star"></StarButton>
+                    <!-- <LikeButton :comment_id="floorInfo.commentId" :like-info="floorInfo.reward.like"></LikeButton>
+                    <CoinButton :comment_id="floorInfo.commentId" :coin-info="floorInfo.reward.coin">
+                    </CoinButton> -->
+                    <!-- <StarButton v-if="floorInfo.floorNumber===1" :post_id="postId" :star-info="postInfo.star"></StarButton> -->
 
                     <div class="replyButton" @click="openReplyBar">
                         评论
                     </div>
                 </div>
             </div>
-            <div v-if="showReplyBar && floorInfo.floor_number!==1">
+            <div v-if="showReplyBar && floorInfo.floorNumber!==1">
                 <ReplyBar @replySubmit="onReplySubmit"></ReplyBar>
             </div>
 

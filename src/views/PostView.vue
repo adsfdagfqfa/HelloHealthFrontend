@@ -40,7 +40,7 @@ const openCommentEditor = () =>{
 }
 
 const reloadPost = ()=>{
-    axios.get("/api/Forum/PostInfo/"+ postId)
+    axios.get("/forumService/forum/posts/"+ postId)
         .then((res) => {
             postInfo.data = res.json;
             nextTick(gotoSpecificFloor);

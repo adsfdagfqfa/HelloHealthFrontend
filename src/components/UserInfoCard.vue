@@ -28,10 +28,10 @@ const click = () => {
 
 <template>
     <div class="avatarHolder" @click="click">
-        <el-avatar class="avatar" :size="50" :src="userInfo.avatar_url" :class="{showAvatarBorder: showAvatarBorder}"/>
+        <el-avatar class="avatar" :size="50" :src="userInfo.avatarUrl" :class="{showAvatarBorder: showAvatarBorder}"/>
         <div class="userInfoHolder">
-            <div class="userName">{{ userInfo.user_name }}</div>
-            <div class="userGroup"><span>{{ userGroupNameDict[userInfo.user_group] }}</span><i class="fi fi-ss-hexagon-check verifiedIcon" :class="{notVisible:!userInfo.verified}"></i></div>
+            <div class="userName">{{ userInfo.userName }}</div>
+            <div class="userGroup"><span>{{ userGroupNameDict[userInfo.userGroup] }}</span><i class="fi fi-ss-hexagon-check verifiedIcon" :class="{notVisible:!userInfo.verified}"></i></div>
         </div>
     </div>
 </template>
