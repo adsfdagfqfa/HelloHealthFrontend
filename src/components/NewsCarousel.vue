@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     getNewsList() {
-      const apiUrl = "/FlashService/flash/hotNews";
+      const apiUrl = "/spring/api/v1/flash/hotNews";
       axios.get(apiUrl)
           .then(res => {
               console.log(res)
