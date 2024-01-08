@@ -61,7 +61,7 @@ const onSubmit = () => {
         isError.value = true
         return
     }
-    axios.post("/loginService/user/login",loginCredential).then(response => {
+    axios.post("/spring/api/vi/loginService/user",loginCredential).then(response => {
         localStorage.setItem("userId",response.data.data.userId)
         isError.value = false;
         errorMsg.value = ''

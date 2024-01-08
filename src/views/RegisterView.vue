@@ -90,7 +90,7 @@ const onSubmit = () => {
         isError.value = true
         return
     }
-    axios.post('/register/user/register', registerCredential).then( response =>{
+    axios.post('/spring/api/v1/user/register', registerCredential).then( response =>{
         isError.value = false
         errorMsg.value = ''
         alert('注册成功！')
@@ -150,7 +150,7 @@ const sendVerificationCode = async () => {
         }
     }, 1000);
 
-    axios.post('/register/user/register', requestVerificationCode).then(response => {
+    axios.post('/spring/api/v1/user/register', requestVerificationCode).then(response => {
         isError.value = false
         errorMsg.value = ''
         ElMessage.success("发送成功。")

@@ -530,7 +530,7 @@ export default {
                 return;
             }
             const sessionUserId = localStorage.getItem("userId")
-            axios.get('/userInfoService/user/getDetails?frontUserId='+userIdNum+"&sessionUserId="+sessionUserId)
+            axios.get('/spring/api/v1/userInfoService/details?frontUserId='+userIdNum+"&sessionUserId="+sessionUserId)
                 .then(response => {
                     const responseData = response.data.data.userInfo;
                     this.userInfo = responseData
@@ -606,7 +606,7 @@ export default {
         unfollow(userId) {
           const unfollowUserId = localStorage.getItem("userId")
             if (userId) {
-                axios.post("/userInfoService/user/unfollowUser", { userId: unfollowUserId,followUserID: userId })
+                axios.post("/spring/api/v1/userInfoService/unfollow", { userId: unfollowUserId,followUserID: userId })
                     .then(response => {
                         //如果后端返回的状态码是200，那么将isFollowed设置为false
                         this.followMap.set(userId, false)
@@ -617,7 +617,7 @@ export default {
                         error.defaultHandler();
                     });
             } else {
-                axios.post("/userInfoService/user/unfollowUser", { userId: unfollowUserId, followUserID: this.userInfo.userID })
+                axios.post("/spring/api/v1/userInfoService/unfollow", { userId: unfollowUserId, followUserID: this.userInfo.userID })
                     .then(response => {
                         //如果后端返回的状态码是200，那么将isFollowed设置为false
                         this.isFollowed = false;
@@ -633,7 +633,7 @@ export default {
         followUser(userId) {
             const followUserId = localStorage.getItem("userId")
             if (userId) {
-                axios.post("/userInfoService/user/followUser", { userId: followUserId,followUserID: userId })
+                axios.post("/spring/api/v1/userInfoService/follow", { userId: followUserId,followUserID: userId })
                     .then(response => {
                         //如果后端返回的状态码是200，那么将isFollowed设置为true
                         this.followMap.set(userId, true);
@@ -644,7 +644,7 @@ export default {
                         error.defaultHandler();
                     });
             } else {
-                axios.post("/userInfoService/user/followUser", { userId: followUserId, followUserID: this.userInfo.userID })
+                axios.post("/spring/api/v1/userInfoService/follow", { userId: followUserId, followUserID: this.userInfo.userID })
                     .then(response => {
                         //如果后端返回的状态码是200，那么将isFollowed设置为true
                         this.isFollowed = true;
@@ -677,7 +677,7 @@ export default {
         },
         save() {
             // 将修改后的用户信息保存到数据库
-            axios.post('/userInfoService/user/modifyUserInfo', {
+            axios.put('/spring/api/v1/userInfoService/info', {
                 gender: this.userInfo.gender,
                 email: this.userInfo.email,
                 birthday: this.userInfo.birthday,
@@ -738,7 +738,7 @@ export default {
             // 发起一个 POST 请求，将 formData 发送给后端服务器
             const uploadImageUserId = localStorage.getItem("userId");
             formData.append("userId",uploadImageUserId);
-            axios.post('/userInfoService/user/uploadDoctorApproval', formData)
+            axios.put('/spring/api/v1/userInfoService/doctorApproval', formData)
                 .then(response => {
                     console.log(response.data);
                     if (response.data.data.status == true) {
@@ -766,7 +766,7 @@ export default {
             const formData = new FormData();
             formData.append('file', this.file);
             //发起一个POST请求，将formData发送给后端服务器
-            axios.post("/api/UserInfo/uploadAvatar", formData)
+            axios.post("/spring/api/v1/userInfoService/avatar", formData)
                 .then((response) => {
                     console.log(response.data);
                     if (response.data.data.status == true) {
@@ -785,7 +785,7 @@ export default {
         },
         /* 求获取用户发布的帖子 */
         fetchUserPosts(userID) {
-            axios.post("/userInfoService/user/fetchUserPosts", {
+            axios.get("/spring/api/v1/userInfoService/posts", {
 
                 user_id: localStorage.getItem("userId")
 
@@ -796,7 +796,7 @@ export default {
         fetchReport() {
             // 获取举报信息
             const reportUserId = localStorage.getItem("userId")
-            axios.get(`/userInfoService/user/Report?userId=`+reportUserId)
+            axios.get(`/spring/api/v1/userInfoService/report?userId=`+reportUserId)
                 .then((res) => {
                     this.reportList = res.data.data.reportList;
                     console.log(this.reportList)

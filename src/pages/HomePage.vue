@@ -73,7 +73,7 @@ const isLogin = ref(false);
 const loadComplete = ref(true);
 const gotUserInfo = ref(false)
 const userId = localStorage.getItem("userId")
-axios.get("/userInfoService/user/getUserInfo?userId="+userId).then(response => {
+axios.get("/spring/api/v1/userInfoService/info?userId="+userId).then(response => {
     let responseObj = response.json
     isLogin.value = responseObj.login;
 
