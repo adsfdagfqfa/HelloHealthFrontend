@@ -215,7 +215,7 @@ export default {
           const formData = new FormData();
           formData.append('id', parseInt(event.id));
           formData.append('userId', localStorage.getItem("userId"));
-            axios.post("/toDoListService/api/toDoList/removeEvents",formData)
+            axios.delete("/spring/api/v1/toDoListService/list/events",formData)
                 .then(res => {
                     const index = this.allEvents.findIndex(e => e.id === event.id);
                     if (index !== -1)
@@ -374,7 +374,7 @@ export default {
                 formData.append('notify',newCompleteEvent.notify);
                 formData.append('interval',newCompleteEvent.interval);
 
-                let res = await axios.post('/toDoListService/api/toDoList/editEvents',formData)
+                let res = await axios.put('/spring/api/v1/toDoListService/list/events',formData)
                 if(!oldEvent){
                     oldEvent = {id: res.json.new_id}
                     this.allEvents.push(oldEvent)
@@ -474,7 +474,7 @@ export default {
             this.$router.push("/login")
             return;
         }
-        axios.get("/toDoListService/api/toDoList/getEvents"+"?userId="+localStorage.getItem("userId"))
+        axios.get("/spring/api/v1/toDoListService/list/events"+"?userId="+localStorage.getItem("userId"))
             .then(res => {
                 this.allEvents = []
                 for(let event of res.json.events){
