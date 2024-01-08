@@ -141,7 +141,7 @@ export default {
         {
             goDetail() {
                 router.push({
-                    path: "/forumService/forum/posts/" + this.post_info.postId,
+                    path: "/spring/api/v1/forumService/forum/posts/" + this.post_info.postId,
                 });
             },
             // //防止标题过长

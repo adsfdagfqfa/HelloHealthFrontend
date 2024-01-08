@@ -265,7 +265,7 @@ export default{
             // 构建查询参数字符串
             const queryParams = new URLSearchParams({ sort: this.type_sort.type }).toString();
             // 使用GET方法并添加查询参数
-            axios.get(`/forumService/forum/posts?${queryParams}`)
+            axios.get(`/spring/api/v1/forumService/forum/posts?${queryParams}`)
                 .then((res)=> {
                   this.post_list= res.data.data.post_list;
                   console.log(this.post_list)

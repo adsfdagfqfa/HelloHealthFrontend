@@ -199,7 +199,7 @@ const onUnfollowClicked = () => {
                             <ReportButton :comment_id="floorInfo.commentId"></ReportButton>
                             <DeleteButton
                                 v-if="(floorInfo.author.userId===globalData.userInfo.user_id || postInfo.floors[0].author.userId === globalData.userInfo.user_id) && !isSolutionReal"
-                                :comment_id="floorInfo.comment_id" :is-first-floor="floorInfo.floor_number===1" :is-floor="true" @deleted="onMeDeleted">
+                                :comment_id="floorInfo.commentId" :is-first-floor="floorInfo.floorNumber===1" :is-floor="true" @deleted="onMeDeleted">
                             </DeleteButton>
                         </div>
                     </el-popover>
@@ -224,7 +224,7 @@ const onUnfollowClicked = () => {
             </div>
 
             <div class="commentsHolder" v-if="floorInfo.floor_number!==1">
-                <FloorComment ref="comments" v-for="item in floorInfo.comments" :comment-info="item" :floor_id="floorInfo.comment_id" @replyClicked="onCommentReplyClicked" @replySent="onReplySubmit" :post-info="prop.postInfo"></FloorComment>
+                <FloorComment ref="comments" v-for="item in floorInfo.comments" :comment-info="item" :floor_id="floorInfo.commentId" @replyClicked="onCommentReplyClicked" @replySent="onReplySubmit" :post-info="prop.postInfo"></FloorComment>
                 <FloorComment ref="comments" v-for="item in newComments" :comment-info="item" :floor_id="floorInfo.comment_id" @replyClicked="onCommentReplyClicked" @replySent="onReplySubmit" :post-info="prop.postInfo"></FloorComment>
             </div>
         </div>

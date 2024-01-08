@@ -51,8 +51,8 @@ const onMeDeleted = () => {
     <UserInfoCard :user-info="commentInfo.author"></UserInfoCard>
     <div class="content">
         <p>
-            <span v-if="commentInfo.comment_user_id!==-1">
-            回复 {{commentInfo.comment_user_name}} :
+            <span v-if="commentInfo.commentUserId!==-1">
+            回复 {{commentInfo.commentUserName}} :
             </span>
             <span>
                 {{commentInfo.content}}
@@ -61,9 +61,9 @@ const onMeDeleted = () => {
 
         <div class="reward_info">
             <div>
-                {{commentInfo.post_time}}
+                {{commentInfo.postTime}}
             </div>
-            <LikeButton :comment_id="commentInfo.comment_id" :like-info="commentInfo.like"></LikeButton>
+            <LikeButton :comment_id="commentInfo.commentId" :like-info="commentInfo.like"></LikeButton>
 
             <div class="replyButton" @click="showReplyBox">
                 回复
@@ -74,8 +74,8 @@ const onMeDeleted = () => {
                     <i class="fi fi-rr-menu-dots centerIcon replyButton"></i>
                 </template>
                 <div style="text-align: center">
-                    <ReportButton :comment_id="commentInfo.comment_id"></ReportButton>
-                    <DeleteButton v-if="globalData.userInfo.user_id === postInfo.floors[0].author.user_id || globalData.userInfo.user_id === commentInfo.author.user_id" :comment_id="commentInfo.comment_id" @deleted="onMeDeleted"></DeleteButton>
+                    <ReportButton :comment_id="commentInfo.commentId"></ReportButton>
+                    <DeleteButton v-if="globalData.userInfo.user_id === postInfo.floors[0].author.userId || globalData.userInfo.user_id === commentInfo.author.userId" :comment_id="commentInfo.commentId" @deleted="onMeDeleted"></DeleteButton>
                 </div>
             </el-popover>
         </div>
